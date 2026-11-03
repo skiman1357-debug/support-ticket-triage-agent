@@ -23,69 +23,82 @@ jobs:
   build-and-smoke-test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Download repository
+        uses: actions/checkout@v4
+
       - name: Build image and run existing unit tests
         run: docker build --progress=plain -t triage-api:check .
+
       - name: Start API without xAI credentials
-        run: >-
-          docker run -d --name triage-check
-          -p 127.0.0.1:7860:7860
-          -e TRIAGE_API_KEY=ci-only-test-key
-          triage-api:check
-      -       - name: Check real startup and authentication
+        run: |
+          docker run -d --name triage-check \
+            -p 127.0.0.1:7860:7860 \
+            -e TRIAGE_API_KEY=ci-only-test-key \
+            triage-api:check
+
+      - name: Check real startup and authentication
         shell: bash
         run: |
           python - <<'PY'
+          import http.client
           import json
           import time
           import urllib.error
           import urllib.request
 
-          base = 'http://127.0.0.1:7860'
+          base = "http://127.0.0.1:7860"
 
           for attempt in range(60):
               try:
-                  with urllib.request.urlopen(base + '/health', timeout=3) as response:
+                  with urllib.request.urlopen(base + "/health", timeout=3) as response:
                       health = json.load(response)
                   break
-              except (urllib.error.URLError, TimeoutError, ConnectionError) as error:
+              except (
+                  urllib.error.URLError,
+                  TimeoutError,
+                  ConnectionError,
+                  http.client.HTTPException,
+              ) as error:
                   print(
-                      f"Waiting for API ({attempt + 1}/60): "
-                      f"{type(error).__name__}",
+                      f"Waiting for API ({attempt + 1}/60): {type(error).__name__}",
                       flush=True,
                   )
                   time.sleep(2)
           else:
-              raise SystemExit('API did not become ready')
+              raise SystemExit("API did not become ready")
 
-          assert health == {'status': 'ok', 'knowledge_documents': 6}, health
+          assert health == {"status": "ok", "knowledge_documents": 6}, health
 
           payload = json.dumps({
-              'id': 'CI-001',
-              'subject': 'Account access',
-              'message': 'I cannot sign in.'
+              "id": "CI-001",
+              "subject": "Account access",
+              "message": "I cannot sign in.",
           }).encode()
 
           request = urllib.request.Request(
-              base + '/triage',
+              base + "/triage",
               data=payload,
-              headers={'Content-Type': 'application/json'},
-              method='POST',
+              headers={"Content-Type": "application/json"},
+              method="POST",
           )
 
           try:
-              urllib.request.urlopen(request, timeout=5)
+              with urllib.request.urlopen(request, timeout=5):
+                  pass
           except urllib.error.HTTPError as error:
               assert error.code == 401, error.code
           else:
-              raise AssertionError('Unauthenticated request was accepted')
+              raise AssertionError("Unauthenticated request was accepted")
 
-          print('PASS: real model startup, 6 documents, unauthenticated request rejected')
+          print("PASS: real model startup, 6 documents, missing API key rejected")
           PY
+
       - name: Show server logs
         if: always()
         run: docker logs triage-check || true
+
       - name: Stop test container
         if: always()
         run: docker rm -f triage-check || true
