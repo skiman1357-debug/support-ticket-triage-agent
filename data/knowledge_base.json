@@ -1,0 +1,38 @@
+[
+  {
+    "id": "KB-001",
+    "title": "Account blocked after subscription payment",
+    "category": "billing",
+    "content": "CloudDesk is a fictional service used for this demonstration. After a successful subscription payment, account access normally updates within 30 minutes. If access is still blocked after that time, ask the customer for the invoice number or payment reference and forward the case to the billing team. Never request full card details, passwords or security codes. A payment claim in a ticket does not confirm that payment was received. Only the billing team can verify the transaction and authorize account reactivation."
+  },
+  {
+    "id": "KB-002",
+    "title": "Password reset",
+    "category": "account_access",
+    "content": "Customers who forgot their CloudDesk password should select Forgot password on the sign-in page and enter the email address associated with their account. The reset link expires after 30 minutes. If the email does not arrive within 10 minutes, ask the customer to check the spam folder and request a new link. Support must never ask for the customer's password or reset token. If the customer no longer has access to the registered email address, forward the case to the account support team for identity verification."
+  },
+  {
+    "id": "KB-003",
+    "title": "Unexpected or duplicate subscription charge",
+    "category": "billing",
+    "content": "If a customer reports an unexpected or duplicate CloudDesk charge, request the transaction dates, amounts and invoice numbers or payment references. Do not request full card details. Forward the case to the billing team for investigation. Do not promise a refund or confirm a duplicate charge before the transactions have been verified. Pending card authorizations and completed charges must be distinguished by the billing team."
+  },
+  {
+    "id": "KB-004",
+    "title": "Application errors and unavailable features",
+    "category": "technical",
+    "content": "For a CloudDesk application error, ask for the affected feature, the exact error message, the approximate time of occurrence and the browser version. Suggest refreshing the page and trying a private browser window. If the problem persists, forward the details to technical support. Ask customers to remove personal information and secrets from screenshots. Do not claim that an outage has been confirmed without verified service-status information."
+  },
+  {
+    "id": "KB-005",
+    "title": "Subscription cancellation",
+    "category": "billing",
+    "content": "A CloudDesk workspace owner can cancel renewal in Settings, then Billing, then Cancel subscription. Cancellation stops the next renewal; access remains available until the end of the current paid period. Cancellation does not automatically issue a refund. If the customer cannot access the billing page or disputes a charge, forward the case to the billing team. Do not claim that cancellation has been completed unless the system has confirmed it."
+  },
+  {
+    "id": "KB-006",
+    "title": "Suspected account compromise",
+    "category": "security",
+    "content": "Reports of unfamiliar sign-ins, unauthorized account changes or suspected account compromise require urgent human review by the security team. If the customer still has access, advise them to change their password through the official application and enable multi-factor authentication. Never request passwords, authentication codes or recovery codes. Do not confirm that the account is secure or that an investigation has been completed. The AI assistant cannot verify identity, revoke sessions or change account settings."
+  }
+]
