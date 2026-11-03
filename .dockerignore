@@ -1,0 +1,18 @@
+# Only these files may enter the Docker build context.
+**
+!Dockerfile
+!.dockerignore
+!requirements-api.txt
+!api.py
+!api_models.py
+!api_security.py
+!ticket_models.py
+!triage_agent.py
+!triage_models.py
+!semantic_search.py
+!knowledge_base.py
+!test_api.py
+!test_triage_validation.py
+!data/
+data/*
+!data/knowledge_base.json
