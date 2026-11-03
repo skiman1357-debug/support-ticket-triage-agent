@@ -1,20 +1,3 @@
-print("STREAMLIT_SCRIPT_STARTED", flush=True)
-
-import streamlit as st
-
-if st.query_params.get("diagnostic") == "1":
-    st.title("Streamlit diagnostic")
-    st.success("Streamlit działa i wyświetla interfejs.")
-
-    test_value = st.text_input(
-        "Wpisz słowo test i naciśnij Enter",
-        key="diagnostic_text",
-    )
-
-    if test_value:
-        st.success("Pole tekstowe działa.")
-
-    st.stop()
 import hmac
 import os
 from pathlib import Path
