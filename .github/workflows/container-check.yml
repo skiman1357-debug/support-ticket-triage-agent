@@ -48,8 +48,13 @@ jobs:
                   with urllib.request.urlopen(base + '/health', timeout=3) as response:
                       health = json.load(response)
                   break
-              except (urllib.error.URLError, TimeoutError):
-                  time.sleep(2)
+                        except (urllib.error.URLError, TimeoutError, ConnectionError) as error:
+              print(
+                  f"Waiting for API ({attempt + 1}/60): "
+                  f"{type(error).__name__}",
+                  flush=True,
+              )
+              time.sleep(2)
           else:
               raise SystemExit('API did not become ready')
 
