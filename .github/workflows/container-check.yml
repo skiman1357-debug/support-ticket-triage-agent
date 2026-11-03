@@ -33,7 +33,7 @@ jobs:
           -p 127.0.0.1:7860:7860
           -e TRIAGE_API_KEY=ci-only-test-key
           triage-api:check
-      - name: Check real startup and authentication
+      -       - name: Check real startup and authentication
         shell: bash
         run: |
           python - <<'PY'
@@ -43,36 +43,44 @@ jobs:
           import urllib.request
 
           base = 'http://127.0.0.1:7860'
+
           for attempt in range(60):
               try:
                   with urllib.request.urlopen(base + '/health', timeout=3) as response:
                       health = json.load(response)
                   break
-                        except (urllib.error.URLError, TimeoutError, ConnectionError) as error:
-              print(
-                  f"Waiting for API ({attempt + 1}/60): "
-                  f"{type(error).__name__}",
-                  flush=True,
-              )
-              time.sleep(2)
+              except (urllib.error.URLError, TimeoutError, ConnectionError) as error:
+                  print(
+                      f"Waiting for API ({attempt + 1}/60): "
+                      f"{type(error).__name__}",
+                      flush=True,
+                  )
+                  time.sleep(2)
           else:
               raise SystemExit('API did not become ready')
 
           assert health == {'status': 'ok', 'knowledge_documents': 6}, health
+
           payload = json.dumps({
-              'id': 'CI-001', 'subject': 'Account access',
+              'id': 'CI-001',
+              'subject': 'Account access',
               'message': 'I cannot sign in.'
           }).encode()
+
           request = urllib.request.Request(
-              base + '/triage', data=payload,
-              headers={'Content-Type': 'application/json'}, method='POST'
+              base + '/triage',
+              data=payload,
+              headers={'Content-Type': 'application/json'},
+              method='POST',
           )
+
           try:
               urllib.request.urlopen(request, timeout=5)
           except urllib.error.HTTPError as error:
               assert error.code == 401, error.code
           else:
               raise AssertionError('Unauthenticated request was accepted')
+
           print('PASS: real model startup, 6 documents, unauthenticated request rejected')
           PY
       - name: Show server logs
