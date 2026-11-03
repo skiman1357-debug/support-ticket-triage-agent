@@ -1,3 +1,11 @@
+print("STREAMLIT_SCRIPT_STARTED", flush=True)
+
+import streamlit as st
+
+if st.query_params.get("diagnostic") == "1":
+    st.title("Streamlit diagnostic")
+    st.success("Streamlit działa i wyświetla interfejs.")
+    st.stop()
 import hmac
 import os
 from pathlib import Path
