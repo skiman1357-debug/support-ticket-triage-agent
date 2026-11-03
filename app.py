@@ -2,7 +2,7 @@ print("STREAMLIT_SCRIPT_STARTED", flush=True)
 
 import streamlit as st
 
-iif st.query_params.get("diagnostic") == "1":
+if st.query_params.get("diagnostic") == "1":
     st.title("Streamlit diagnostic")
     st.success("Streamlit działa i wyświetla interfejs.")
 
