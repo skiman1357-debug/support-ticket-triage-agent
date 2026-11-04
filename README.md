@@ -22,6 +22,7 @@ modify accounts, or route tickets to a real support team.
 ## Live project
 
 - [Live demo](https://support-ticket-triage-agent-cde75gseq2urbxctejecn3.streamlit.app/)
+- [Video demo](https://youtu.be/CR63H987RqQ)
 - [Source code](https://github.com/skiman1357-debug/support-ticket-triage-agent)
 - [API documentation](https://skiman1357-support-ticket-triage-api.hf.space/docs)
 - [API health](https://skiman1357-support-ticket-triage-api.hf.space/health)
